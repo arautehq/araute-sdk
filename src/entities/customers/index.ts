@@ -7,6 +7,7 @@ import type {
 import { ArauteHttpClient } from "../../common/http";
 import { CrudResource } from "../../common/resource";
 
+/** Customer resource operations mapped to `/customers`. */
 export class CustomerResource extends CrudResource<
   Customer,
   CustomerCreate,

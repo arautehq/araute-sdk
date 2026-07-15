@@ -1,5 +1,6 @@
 import type { Problem } from "./types";
 
+/** Error thrown when the Araute API returns an RFC 7807 problem response. */
 export class ArauteError extends Error {
   readonly status: number;
   readonly type: string;
@@ -24,6 +25,7 @@ export class ArauteError extends Error {
   }
 }
 
+/** Error thrown for unexpected non-problem transport failures. */
 export class ArauteTransportError extends Error {
   readonly status: number;
   readonly responseText: string;

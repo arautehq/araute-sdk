@@ -18,9 +18,16 @@ export interface CrudOperations<
   TUpdate,
   TListQuery extends ListQuery = ListQuery,
 > {
+  /** Creates a new resource. Sends a `POST` request to the collection path. */
   create(input: TCreate, options?: RequestOptions): Promise<TEntity>;
+
+  /** Lists resources from the collection path. Sends a `GET` request. */
   list(query?: TListQuery, options?: RequestOptions): Promise<ListResponse<TEntity>>;
+
+  /** Fetches a single resource by id. Sends a `GET` request to `/{id}`. */
   get(id: string, options?: RequestOptions): Promise<TEntity>;
+
+  /** Updates a resource by id. Sends a `PATCH` request to `/{id}`. */
   update(
     id: string,
     input: TUpdate,
@@ -43,10 +50,12 @@ export abstract class CrudResource<
     protected readonly path: string,
   ) {}
 
+  /** @inheritdoc */
   create(input: TCreate, options?: RequestOptions) {
     return this.http.post<TEntity>(this.path, input as never, options);
   }
 
+  /** @inheritdoc */
   list(query?: TListQuery, options?: RequestOptions) {
     return this.http.get<ListResponse<TEntity>>(
       this.path,
@@ -55,10 +64,12 @@ export abstract class CrudResource<
     );
   }
 
+  /** @inheritdoc */
   get(id: string, options?: RequestOptions) {
     return this.http.get<TEntity>(`${this.path}/${id}`, undefined, options);
   }
 
+  /** @inheritdoc */
   update(
     id: string,
     input: TUpdate,
@@ -78,6 +89,7 @@ export abstract class DeletableResource<
   TListQuery extends ListQuery = ListQuery,
   TDeleted = DeletedResource,
 > extends CrudResource<TEntity, TCreate, TUpdate, TListQuery> {
+  /** Deletes a resource by id. Sends a `DELETE` request to `/{id}`. */
   delete(id: string, options?: RequestOptions) {
     return this.http.delete<TDeleted>(`${this.path}/${id}`, options);
   }
