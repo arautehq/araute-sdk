@@ -7,7 +7,6 @@ import type {
   WebhookEndpointUpdate,
 } from "./model";
 
-/** Webhook endpoint resource operations mapped to `/webhook_endpoints`. */
 export class WebhookEndpointResource extends DeletableResource<
   WebhookEndpoint,
   WebhookEndpointCreate,

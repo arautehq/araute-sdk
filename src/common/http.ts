@@ -36,7 +36,11 @@ export class ArauteHttpClient {
       : "araute-sdk/0.1.0";
   }
 
-  get<T>(path: string, query?: Record<string, string | number | undefined>, options?: RequestOptions) {
+  get<T>(
+    path: string,
+    query?: Record<string, string | number | boolean | undefined>,
+    options?: RequestOptions,
+  ) {
     return this.request<T>("GET", path, query, undefined, options);
   }
 
@@ -63,7 +67,7 @@ export class ArauteHttpClient {
   private async request<T>(
     method: HttpMethod,
     path: string,
-    query?: Record<string, string | number | undefined>,
+    query?: Record<string, string | number | boolean | undefined>,
     body?: JsonValue | undefined,
     options?: RequestOptions,
   ): Promise<T> {

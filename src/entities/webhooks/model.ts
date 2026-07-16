@@ -18,7 +18,7 @@ export type WebhookEndpoint = {
   updated_at: string;
 };
 
-/** Request body for `webhookEndpoint.create(...)`. */
+/** Request body for `webhooks.create(...)`. */
 export type WebhookEndpointCreate = {
   url: string;
   enabled_events: string[];
@@ -26,7 +26,7 @@ export type WebhookEndpointCreate = {
   metadata?: Metadata;
 };
 
-/** Request body for `webhookEndpoint.update(...)`. */
+/** Request body for `webhooks.update(...)`. */
 export type WebhookEndpointUpdate = {
   url?: string;
   enabled_events?: string[];
@@ -36,5 +36,5 @@ export type WebhookEndpointUpdate = {
   metadata?: Metadata;
 };
 
-/** Supported query parameters for `webhookEndpoint.list(...)`. */
+/** Supported query parameters for `webhooks.list(...)`. */
 export type WebhookEndpointListQuery = ListQuery;

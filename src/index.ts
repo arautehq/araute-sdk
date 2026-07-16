@@ -18,6 +18,11 @@ export type {
   CustomerUpdate,
 } from "./entities/customers/model";
 export type {
+  Product,
+  ProductCreate,
+  ProductListQuery,
+} from "./entities/products/model";
+export type {
   WebhookEndpoint,
   WebhookEndpointCreate,
   WebhookEndpointListQuery,

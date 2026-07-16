@@ -18,7 +18,7 @@ export type Customer = {
   updated_at: string;
 };
 
-/** Request body for `customer.create(...)`. */
+/** Request body for `customers.create(...)`. */
 export type CustomerCreate = {
   name?: string;
   email?: string;
@@ -28,7 +28,7 @@ export type CustomerCreate = {
   metadata?: Metadata;
 };
 
-/** Request body for `customer.update(...)`. */
+/** Request body for `customers.update(...)`. */
 export type CustomerUpdate = {
   name?: string;
   email?: string;
@@ -38,7 +38,7 @@ export type CustomerUpdate = {
   metadata?: Metadata;
 };
 
-/** Supported query parameters for `customer.list(...)`. */
+/** Supported query parameters for `customers.list(...)`. */
 export type CustomerListQuery = ListQuery & {
   email?: string;
   tax_id?: string;

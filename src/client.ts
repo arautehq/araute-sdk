@@ -1,6 +1,7 @@
 import { ArauteHttpClient } from "./common/http";
 import type { ArauteConfig } from "./common/types";
 import { CustomerResource } from "./entities/customers";
+import { ProductResource } from "./entities/products";
 import { WebhookEndpointResource } from "./entities/webhooks";
 
 /**
@@ -9,26 +10,21 @@ import { WebhookEndpointResource } from "./entities/webhooks";
  * @example
  * ```ts
  * const araute = new Araute({ apiKey: process.env.ARAUTE_API_KEY! });
- * const customer = await araute.customer.get("cus_123");
+ * const customer = await araute.customers.get("cus_123");
+ * const product = await araute.products.get("prod_123");
  * ```
  */
 export class Araute {
-  /** Operations for the `/customers` resource. */
-  readonly customer: CustomerResource;
+  readonly customers: CustomerResource;
 
-  /** Operations for the `/webhook_endpoints` resource. */
-  readonly webhookEndpoint: WebhookEndpointResource;
+  readonly products: ProductResource;
 
-  /**
-   * Creates a new Araute SDK client.
-   *
-   * The provided `apiKey` is sent on every request as
-   * `Authorization: Bearer <apiKey>`.
-   */
+  readonly webhooks: WebhookEndpointResource;
   constructor(config: ArauteConfig) {
     const http = new ArauteHttpClient(config);
 
-    this.customer = new CustomerResource(http);
-    this.webhookEndpoint = new WebhookEndpointResource(http);
+    this.customers = new CustomerResource(http);
+    this.products = new ProductResource(http);
+    this.webhooks = new WebhookEndpointResource(http);
   }
 }
