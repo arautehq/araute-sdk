@@ -39,7 +39,7 @@ export abstract class CrudResource<
   ) {}
 
   create(input: TCreate, options?: RequestOptions) {
-    return this.http.post<TEntity>(this.path, input as never, options);
+    return this.http.post<TEntity>(this.path, input, options);
   }
 
   list(query?: TListQuery, options?: RequestOptions) {
@@ -59,7 +59,7 @@ export abstract class CrudResource<
     input: TUpdate,
     options?: Omit<RequestOptions, "idempotencyKey">,
   ) {
-    return this.http.patch<TEntity>(`${this.path}/${id}`, input as never, options);
+    return this.http.patch<TEntity>(`${this.path}/${id}`, input, options);
   }
 }
 

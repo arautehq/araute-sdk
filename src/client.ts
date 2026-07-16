@@ -2,6 +2,7 @@ import { ArauteHttpClient } from "./common/http";
 import type { ArauteConfig } from "./common/types";
 import { CustomerResource } from "./entities/customers";
 import { ProductResource } from "./entities/products";
+import { SubscriptionResource } from "./entities/subscriptions";
 import { WebhookEndpointResource } from "./entities/webhooks";
 
 /**
@@ -19,12 +20,15 @@ export class Araute {
 
   readonly products: ProductResource;
 
+  readonly subscriptions: SubscriptionResource;
+
   readonly webhooks: WebhookEndpointResource;
   constructor(config: ArauteConfig) {
     const http = new ArauteHttpClient(config);
 
     this.customers = new CustomerResource(http);
     this.products = new ProductResource(http);
+    this.subscriptions = new SubscriptionResource(http);
     this.webhooks = new WebhookEndpointResource(http);
   }
 }

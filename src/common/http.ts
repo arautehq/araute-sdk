@@ -3,14 +3,6 @@ import type { ArauteConfig, Problem, RequestOptions } from "./types";
 
 type HttpMethod = "GET" | "POST" | "PATCH" | "DELETE";
 
-type JsonValue =
-  | string
-  | number
-  | boolean
-  | null
-  | JsonValue[]
-  | { [key: string]: JsonValue };
-
 const DEFAULT_BASE_URL = "https://api.araute.com/v1";
 
 export class ArauteHttpClient {
@@ -46,7 +38,7 @@ export class ArauteHttpClient {
 
   post<T>(
     path: string,
-    body?: JsonValue | undefined,
+    body?: unknown,
     options?: RequestOptions,
   ) {
     return this.request<T>("POST", path, undefined, body, options);
@@ -54,8 +46,8 @@ export class ArauteHttpClient {
 
   patch<T>(
     path: string,
-    body?: JsonValue | undefined,
-    options?: Omit<RequestOptions, "idempotencyKey">,
+    body?: unknown,
+    options?: RequestOptions,
   ) {
     return this.request<T>("PATCH", path, undefined, body, options);
   }
@@ -68,7 +60,7 @@ export class ArauteHttpClient {
     method: HttpMethod,
     path: string,
     query?: Record<string, string | number | boolean | undefined>,
-    body?: JsonValue | undefined,
+    body?: unknown,
     options?: RequestOptions,
   ): Promise<T> {
     const url = new URL(`${this.baseUrl}${path}`);
@@ -90,7 +82,7 @@ export class ArauteHttpClient {
       headers.set("Content-Type", "application/json");
     }
 
-    if (method === "POST" && options?.idempotencyKey) {
+    if ((method === "POST" || method === "PATCH") && options?.idempotencyKey) {
       headers.set("Idempotency-Key", options.idempotencyKey);
     }
 

@@ -23,6 +23,21 @@ export type {
   ProductListQuery,
 } from "./entities/products/model";
 export type {
+  Subscription,
+  SubscriptionCancel,
+  SubscriptionChange,
+  SubscriptionChangeCreate,
+  SubscriptionChangeListQuery,
+  SubscriptionChangePreview,
+  SubscriptionChangePreviewRequest,
+  SubscriptionCreate,
+  SubscriptionItem,
+  SubscriptionListQuery,
+  SubscriptionPause,
+  SubscriptionResume,
+  SubscriptionUpdate,
+} from "./entities/subscriptions/model";
+export type {
   WebhookEndpoint,
   WebhookEndpointCreate,
   WebhookEndpointListQuery,
