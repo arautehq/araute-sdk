@@ -12,6 +12,15 @@ export type {
   RequestOptions,
 } from "./common/types";
 export type {
+  CheckoutSession,
+  CheckoutSessionCreate,
+  CheckoutSessionCreateLineItem,
+  CheckoutSessionListQuery,
+  CheckoutSessionMode,
+  CheckoutSessionPaymentStatus,
+  CheckoutSessionStatus,
+} from "./entities/checkouts";
+export type {
   Customer,
   CustomerCreate,
   CustomerListQuery,
