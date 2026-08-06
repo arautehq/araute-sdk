@@ -8,10 +8,11 @@ export class ArauteError extends Error {
   readonly detail: string | null | undefined;
   readonly param: string | null | undefined;
   readonly traceId: string | undefined;
+  readonly retryAfter: string | null;
   readonly errors: Problem["errors"];
   readonly amountRefundable: number | undefined;
 
-  constructor(problem: Problem) {
+  constructor(problem: Problem, retryAfter: string | null = null) {
     super(problem.title);
     this.name = "ArauteError";
     this.status = problem.status;
@@ -20,6 +21,7 @@ export class ArauteError extends Error {
     this.detail = problem.detail;
     this.param = problem.param;
     this.traceId = problem.traceId;
+    this.retryAfter = retryAfter;
     this.errors = problem.errors;
     this.amountRefundable = problem.amountRefundable;
   }

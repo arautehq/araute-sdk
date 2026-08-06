@@ -34,7 +34,7 @@ export type SubscriptionItem = {
 };
 
 /** Cancellation metadata returned by subscription resources. */
-export type CancellationDetails = {
+export type SubscriptionCancellationDetails = {
   reason?: CancellationReason;
   feedback?: string;
 } | null;
@@ -81,7 +81,7 @@ export type Subscription = {
   cancelAtPeriodEnd?: boolean;
   cancelAt?: string | null;
   cancelledAt?: string | null;
-  cancellationDetails?: CancellationDetails;
+  cancellationDetails?: SubscriptionCancellationDetails;
   gracePeriodDays?: number;
   latestInvoice?: string | null;
   pendingChange?: SubscriptionChange | null;

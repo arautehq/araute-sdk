@@ -125,7 +125,7 @@ export class ArauteHttpClient {
 
     if (isProblem) {
       const problem = toCamelCase<Problem>(await response.json());
-      throw new ArauteError(problem);
+      throw new ArauteError(problem, response.headers.get("Retry-After"));
     }
 
     const text = await response.text();

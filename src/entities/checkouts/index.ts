@@ -1,5 +1,5 @@
 import { ArauteHttpClient } from "../../common/http";
-import { CrudResource } from "../../common/resource";
+import { ReadonlyResource } from "../../common/resource";
 import type { ListQuery, Metadata, RequestOptions } from "../../common/types";
 
 /** Supported checkout session modes. */
@@ -90,14 +90,22 @@ export type CheckoutSessionListQuery = ListQuery & {
   customer?: string;
 };
 
-export class CheckoutResource extends CrudResource<
+export class CheckoutResource extends ReadonlyResource<
   CheckoutSession,
   CheckoutSessionCreate,
-  never,
   CheckoutSessionListQuery
 > {
   constructor(http: ArauteHttpClient) {
     super(http, "/checkout_sessions");
+  }
+
+  override create(input: CheckoutSessionCreate, options?: RequestOptions) {
+    const { methods, ...rest } = input;
+    return this.http.post<CheckoutSession>(
+      this.path,
+      methods ? { ...rest, paymentMethodTypes: methods } : rest,
+      options,
+    );
   }
 
   expire(id: string, options?: RequestOptions) {

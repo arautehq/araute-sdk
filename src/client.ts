@@ -5,7 +5,9 @@ import { CustomerResource } from "./entities/customers";
 import { ProductResource } from "./entities/products";
 import { PaymentResource } from "./entities/payments";
 import { SubscriptionResource } from "./entities/subscriptions";
-import { WebhookEndpointResource } from "./entities/webhooks";
+import { PriceResource } from "./entities/prices";
+import { InvoiceResource } from "./entities/invoices";
+import { RefundResource } from "./entities/refunds";
 
 /**
  * Root Araute SDK client.
@@ -28,7 +30,9 @@ export class Araute {
 
   readonly subscriptions: SubscriptionResource;
 
-  readonly webhooks: WebhookEndpointResource;
+  readonly prices: PriceResource;
+  readonly invoices: InvoiceResource;
+  readonly refunds: RefundResource;
   constructor(config: ArauteConfig) {
     const http = new ArauteHttpClient(config);
 
@@ -37,6 +41,8 @@ export class Araute {
     this.products = new ProductResource(http);
     this.payments = new PaymentResource(http);
     this.subscriptions = new SubscriptionResource(http);
-    this.webhooks = new WebhookEndpointResource(http);
+    this.prices = new PriceResource(http);
+    this.invoices = new InvoiceResource(http);
+    this.refunds = new RefundResource(http);
   }
 }

@@ -63,6 +63,33 @@ export abstract class CrudResource<
   }
 }
 
+export abstract class ReadonlyResource<
+  TEntity,
+  TCreate,
+  TListQuery extends ListQuery = ListQuery,
+> {
+  constructor(
+    protected readonly http: ArauteHttpClient,
+    protected readonly path: string,
+  ) {}
+
+  create(input: TCreate, options?: RequestOptions) {
+    return this.http.post<TEntity>(this.path, input, options);
+  }
+
+  list(query?: TListQuery, options?: RequestOptions) {
+    return this.http.get<ListResponse<TEntity>>(
+      this.path,
+      query as QueryParams | undefined,
+      options,
+    );
+  }
+
+  get(id: string, options?: RequestOptions) {
+    return this.http.get<TEntity>(`${this.path}/${id}`, undefined, options);
+  }
+}
+
 export abstract class DeletableResource<
   TEntity,
   TCreate,

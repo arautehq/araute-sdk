@@ -48,6 +48,10 @@ export class SubscriptionResource extends CrudResource<
     );
   }
 
+  getChange(id: string, options?: RequestOptions) {
+    return this.http.get<SubscriptionChange>(`/subscription_changes/${id}`, undefined, options);
+  }
+
   listChanges(
     id: string,
     query?: SubscriptionChangeListQuery,
