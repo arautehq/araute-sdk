@@ -3,6 +3,7 @@ import type { ArauteConfig } from "./common/types";
 import { CheckoutResource } from "./entities/checkouts";
 import { CustomerResource } from "./entities/customers";
 import { ProductResource } from "./entities/products";
+import { PaymentResource } from "./entities/payments";
 import { SubscriptionResource } from "./entities/subscriptions";
 import { WebhookEndpointResource } from "./entities/webhooks";
 
@@ -23,6 +24,8 @@ export class Araute {
 
   readonly products: ProductResource;
 
+  readonly payments: PaymentResource;
+
   readonly subscriptions: SubscriptionResource;
 
   readonly webhooks: WebhookEndpointResource;
@@ -32,6 +35,7 @@ export class Araute {
     this.checkouts = new CheckoutResource(http);
     this.customers = new CustomerResource(http);
     this.products = new ProductResource(http);
+    this.payments = new PaymentResource(http);
     this.subscriptions = new SubscriptionResource(http);
     this.webhooks = new WebhookEndpointResource(http);
   }
