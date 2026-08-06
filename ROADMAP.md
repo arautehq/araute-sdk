@@ -2,168 +2,177 @@
 
 Source of truth: `/home/albqvxc/www/opensource/araute/openapi.yaml`.
 
-OpenAPI version: `3.1.0`. API base: `https://api.araute.com/v1`.
+API base: `https://api.araute.com/v1`
+SDK package: `@araute/sdk`
+
+## Product direction
+
+Build a high-level, TypeScript-first SDK with domain namespaces:
+
+```ts
+const araute = new Araute({ apiKey: process.env.ARAUTE_API_KEY! });
+
+await araute.customers.create({ ... });
+await araute.payments.create({ ... });
+await araute.subscriptions.cancel(id);
+```
+
+Rules:
+
+- Public API uses camelCase; HTTP payloads use snake_case.
+- Public enum values are uppercase (`PIX`, `CARD`); wire values follow OpenAPI.
+- `araute.payments` is the public facade for `/payment_intents`.
+- Public payment creation uses `methods`; wire payload uses `payment_method_types`.
+- Entities stay thin. Authentication, fetch, errors, conversion, pagination, and idempotency live in shared layers.
+- Do not expose `payments.listAttempts()` or a public `PaymentAttempt`; the attempts endpoint remains direct REST only.
+- Never invent SDK methods or fields not supported by `openapi.yaml`.
 
 ## Current state
 
-### Foundation already present
+### Already implemented
 
-- [x] Bearer authentication and configurable base URL.
-- [x] Custom `fetch`, abort signals, extra headers, user-agent.
-- [x] Recursive camelCase public API and snake_case HTTP boundary.
-- [x] Public enum values normalized to uppercase; API wire values remain lowercase.
-- [x] Keyset pagination types: `limit`, `startingAfter`, `endingBefore`.
-- [x] RFC 7807 error mapping to `ArauteError`.
-- [x] Generic CRUD and deletable-resource abstractions.
-- [x] `POST`/`PATCH` idempotency-key support.
-- [x] Tests, typecheck, build, and diff validation passing.
+- Shared client with bearer auth, configurable base URL, custom `fetch`, abort signals, headers, and user agent.
+- Recursive camelCase/snake_case conversion at the HTTP boundary.
+- Uppercase public enum conversion and payment `methods` mapping.
+- Keyset pagination types: `limit`, `startingAfter`, `endingBefore`.
+- RFC 7807 errors through `ArauteError`; transport failures through `ArauteTransportError`.
+- Generic CRUD and deletable-resource helpers.
+- Idempotency-key support for `POST` and `PATCH`.
+- Namespaces for customers, products, checkouts, payments, and subscriptions.
+- Basic payment tests and case-conversion tests.
 
-### Resource coverage
+### Current resource coverage
 
-| OpenAPI tag | SDK status | Current surface |
+| Namespace | OpenAPI operations | SDK status |
 |---|---|---|
-| Customers | Done | create, list, get, update |
-| Products | Done | create, list, get |
-| Prices | Missing | — |
-| PaymentMethods | Missing | — |
-| PaymentLinks | Missing | — |
-| CheckoutSessions | Partial | create, list, get, expire; inherited `update` must be removed |
-| PaymentIntents / Payments | Partial | create, list, get, confirm, cancel; attempt history intentionally omitted; facade named `payments` |
-| Charges | Missing | — |
-| Subscriptions | Partial | CRUD, changes create/list, preview, cancel, pause, resume; change get missing |
-| Invoices | Missing | — |
-| InvoiceItems | Missing | — |
-| Refunds | Missing | — |
-| WebhookEndpoints | Done | create, list, get, update, delete |
-| Events | Missing | — |
-| TaxDocuments | Missing | — |
+| `customers` | create, list, get, update | Implemented |
+| `products` | create, list, get | Implemented |
+| `prices` | create, list, get | Missing |
+| `paymentMethods` | list, get | Missing |
+| `paymentLinks` | create, list, get, update | Missing |
+| `checkouts` | create, list, get, expire | Implemented, remove inherited `update` |
+| `payments` | create, list, get, confirm, cancel | Implemented, contract hardening needed |
+| `charges` | list, get | Missing |
+| `subscriptions` | create, list, get, update, changes, preview, cancel, pause, resume | Partial; change get missing |
+| `invoices` | create, list, get, add item, finalize, pay, void, mark uncollectible | Missing |
+| `invoiceItems` | get, delete | Missing |
+| `refunds` | create, list, get | Missing |
 
-## P0 — contract foundation
+## P0 — contract and architecture foundation
 
-Do before adding many resources.
+- [ ] Make the public entrypoint and architecture match the skill:
+  - `src/index.ts`: exports, constants, and public types.
+  - `src/client.ts`: facade and namespace composition.
+  - `src/common/`: HTTP, errors, case conversion, pagination, and shared resource helpers.
+  - `src/entities/<domain>/index.ts`: thin domain methods.
+  - `src/entities/<domain>/model.ts`: explicit public request/response/query types.
+- [ ] Compare every existing method with its OpenAPI `operationId`, HTTP method, path, request schema, and response schema.
+- [ ] Remove unsupported inherited methods, especially `checkouts.update`.
+- [ ] Decide and document whether the payment-intent facade remains only `payments` or also exposes an alias.
+- [ ] Model required, nullable, timestamp, ID, currency, amount, `object`, and metadata fields exactly as OpenAPI defines them.
+- [ ] Make all side-effecting `POST` operations accept idempotency options where supported.
+- [ ] Preserve status, `Retry-After`, `traceId`, and structured fields for RFC 7807 errors.
+- [ ] Verify `204` and empty-body responses, especially delete operations.
+- [ ] Add typed query models for every list endpoint and correct query snake_case conversion.
+- [ ] Add an OpenAPI drift check for exported operations and paths.
 
-- [ ] Make operation typing match OpenAPI exactly. Remove unsupported inherited methods, especially `checkouts.update`.
-- [ ] Decide and document public naming: keep `araute.payments` as PaymentIntent facade, or expose `paymentIntents` too.
-- [ ] Model all OpenAPI response objects with required fields, nullable fields, timestamps, `object` discriminators, and BRL constraints.
-- [ ] Make idempotency requirements explicit in types/docs for every side-effecting `POST`.
-- [ ] Preserve `Retry-After`, request status, and `traceId` for `idempotency_key_in_use` and rate-limit errors.
-- [ ] Verify `204` and empty-body success behavior for delete/action endpoints.
-- [ ] Add shared query typing for resource-specific filters and correct snake_case conversion.
-- [ ] Add spec-drift check: compare exported operations and paths against `openapi.yaml`.
+## P1 — finish existing namespaces
 
-## P1 — finish existing resources
+### Payments
 
-### Payments / PaymentIntents
+- [ ] Verify create/list/get/confirm/cancel against the PaymentIntent schemas.
+- [ ] Verify `methods` ↔ `payment_method_types` for create, confirm, list, and response conversion.
+- [ ] Cover every public payment enum: status, method, next action, attempt status, and error values.
+- [ ] Keep attempts endpoint intentionally out of the public facade.
 
-- [x] Intentionally omit `payments.listAttempts(...)` and `PaymentAttempt` from the public SDK; endpoint is available directly in the API but not needed by SDK consumers.
-- [ ] Align `methods` / `payment_method_types` translation with OpenAPI request and response schemas.
-- [ ] Test uppercase public enums for payment status, method type, next action, attempt status, and error fields.
+### Checkouts
+
+- [ ] Remove `update` from the public type and runtime surface.
+- [ ] Verify create variants, line items, amount, mode, methods, status, payment status, expiry, and nullable fields.
+- [ ] Test `expire`, idempotency, query filters, and relevant API errors.
 
 ### Subscriptions
 
-- [ ] Add `subscriptions.getChange(id, options?)` for `GET /subscription_changes/{id}`.
-- [ ] Verify all subscription enums and nested fields against schema.
-- [ ] Test action payloads and idempotency for change, cancel, pause, and resume.
-
-### CheckoutSessions
-
-- [ ] Remove unsupported update operation from public type surface.
-- [ ] Verify `methods`, status, payment status, line items, expiration, and deferred checkout variants against schema.
-- [ ] Test `expire` idempotency and `checkout_session_not_open` errors.
+- [ ] Add `subscriptions.getChange(id)` for `GET /subscription_changes/{id}`.
+- [ ] Verify subscription and change enums, nested items, nullable fields, and action payloads.
+- [ ] Test create change, preview, cancel, pause, and resume with idempotency behavior.
 
 ## P2 — catalog and payment setup
 
 ### Prices
 
-- [ ] Add `PriceResource`, `araute.prices`.
-- [ ] Implement `create`, `list`, `get` for `/prices` and `/prices/{id}`.
-- [ ] Add one-time/recurring models, product filter, active filter, currency, amount, interval, and immutable-resource typing.
+- [ ] Add `src/entities/prices/{index,model}.ts` and `araute.prices`.
+- [ ] Implement `create`, `list`, and `get` for `/prices` and `/prices/{id}`.
+- [ ] Model product, active, currency, amount, one-time, and recurring fields exactly.
 
-### PaymentMethods
+### Payment methods
 
-- [ ] Add `PaymentMethodResource`, `araute.paymentMethods`.
+- [ ] Add `src/entities/payment-methods/{index,model}.ts` and `araute.paymentMethods`.
 - [ ] Implement `list` and `get` for `/payment_methods` and `/payment_methods/{id}`.
-- [ ] Require `customer` in list query; support `type` filter (`CARD`, `PIX`).
-- [ ] Ensure sensitive payment data is never modeled or logged.
+- [ ] Model supported filters and safe, non-sensitive payment method data.
 
-### PaymentLinks
+### Payment links
 
-- [ ] Add `PaymentLinkResource`, `araute.paymentLinks`.
-- [ ] Implement `create`, `list`, `get`, `update`.
-- [ ] Model `active`, line items, after-completion behavior, restrictions, and metadata.
-- [ ] Verify PATCH idempotency and `active` state transitions.
+- [ ] Add `src/entities/payment-links/{index,model}.ts` and `araute.paymentLinks`.
+- [ ] Implement `create`, `list`, `get`, and `update` for `/payment_links`.
+- [ ] Model line items, methods, active state, completion behavior, restrictions, and metadata.
 
 ## P3 — payment execution and billing
 
 ### Charges
 
-- [ ] Add `ChargeResource`, `araute.charges`.
-- [ ] Implement `list` and `get` for `/charges` and `/charges/{id}`.
-- [ ] Model charge status, failure data, refunds, disputes, receipt fields, and payment-intent relation.
+- [ ] Add `araute.charges` with `list` and `get`.
+- [ ] Model status, failure data, refunds, disputes, receipt fields, and payment-intent relation.
 
 ### Invoices
 
-- [ ] Add `InvoiceResource`, `araute.invoices`.
-- [ ] Implement `create`, `list`, `get`.
-- [ ] Implement `addItem`, `finalize`, `pay`, `void`, `markUncollectible`.
-- [ ] Model invoice state machine: `DRAFT`, `OPEN`, `PAID`, `VOID`, `UNCOLLECTIBLE`.
-- [ ] Model collection method, billing reason, totals, payment intent, hosted URL, PDF, due date, periods, and lines.
-- [ ] Encode action-specific inputs and no-input actions correctly.
+- [ ] Add `araute.invoices` with `create`, `list`, and `get`.
+- [ ] Add `addItem`, `finalize`, `pay`, `void`, and `markUncollectible`.
+- [ ] Model invoice state, collection method, billing reason, totals, payment intent, hosted URL, PDF, dates, periods, and lines.
+- [ ] Encode action-specific bodies and no-body actions exactly.
 
-### InvoiceItems
+### Invoice items
 
-- [ ] Add `InvoiceItemResource`, `araute.invoiceItems`.
-- [ ] Implement `get` and `delete` for `/invoice_items/{id}`.
+- [ ] Add `araute.invoiceItems` with `get` and `delete`.
 - [ ] Model invoice attachment, quantity, unit amount, amount, proration, discountable, and metadata.
 
 ### Refunds
 
-- [ ] Add `RefundResource`, `araute.refunds`.
-- [ ] Implement `create`, `list`, `get`.
-- [ ] Model async status: `PENDING`, `SUCCEEDED`, `FAILED`.
-- [ ] Preserve `amountRefundable` from RFC 7807 errors.
-- [ ] Test idempotency and refund failure codes.
+- [ ] Add `araute.refunds` with `create`, `list`, and `get`.
+- [ ] Model `PENDING`, `SUCCEEDED`, and `FAILED` states.
+- [ ] Preserve `amountRefundable` and other structured RFC 7807 fields.
+- [ ] Test idempotency and refund failure responses.
 
 ## P4 — platform operations
 
-### WebhookEndpoints
+## P5 — tests, docs, and release
 
-- [ ] Confirm current implementation against secret behavior: secret only on create/rotation.
-- [ ] Add explicit docs for `rollSecret`, event names, HTTPS restriction, and delete semantics.
-- [ ] Test enabled/disabled status and secret redaction.
+### Tests
 
-### Events
+- [ ] Add mocked-fetch coverage for every exposed OpenAPI operation.
+- [ ] Assert exact HTTP method, path, query, body, headers, and return value.
+- [ ] Test camelCase ↔ snake_case conversion, uppercase enums, pagination, nullable fields, and `204`.
+- [ ] Test bearer auth, idempotency, custom headers, abort signals, RFC 7807 errors, retry headers, and transport errors.
+- [ ] Add contract snapshots or generated checks against `openapi.yaml`.
 
-- [ ] Add `EventResource`, `araute.events`.
-- [ ] Implement `list`, `get`, `replay` for `/events`, `/events/{id}`, `/events/{id}/replay`.
-- [ ] Model event snapshot data safely as typed generic/unknown payload.
-- [ ] Model replay delivery status and optional webhook endpoint.
+### Documentation
 
-### TaxDocuments
+- [ ] Rewrite README in this order: package purpose, Bun/pnpm/npm installation, environment secret, client construction, domain example, versioning, errors, and return behavior.
+- [ ] Add valid examples for payments, prices, checkouts, subscriptions, invoices, and refunds.
+- [ ] Document public-to-wire mappings, especially `payments` → `/payment_intents` and `methods` → `payment_method_types`.
+- [ ] Never include real API secrets in examples.
 
-- [ ] Add `TaxDocumentResource`, `araute.taxDocuments`.
-- [ ] Implement `list`, `get`, `retry` for `/tax_documents`, `/tax_documents/{id}`, `/tax_documents/{id}/retry`.
-- [ ] Model NFS-e status lifecycle and invoice/charge/customer relations.
-- [ ] Test `tax_document_not_retryable` behavior.
+### Package and release
 
-## P5 — quality, docs, release
-
-- [ ] Add mocked-fetch tests for every OpenAPI operation.
-- [ ] Add request-body snapshots proving camelCase to snake_case conversion.
-- [ ] Add response snapshots proving snake_case to camelCase and uppercase enum conversion.
-- [ ] Test pagination, filters, null values, `204`, RFC 7807 errors, retry headers, and abort signals.
 - [ ] Export every public resource model from `src/index.ts`.
-- [ ] Add README examples for auth, payments, prices, checkout, subscriptions, invoices, refunds, and webhooks.
-- [ ] Document API-to-SDK name mappings, especially `payments` backed by `/payment_intents`.
-- [ ] Add generated contract/types workflow or CI drift detection from `openapi.yaml`.
-- [ ] Add package metadata, changelog, versioning policy, and CI for `check`, `test`, and `build`.
-- [ ] Publish only after all P0 contract items and P1 resource gaps are complete.
+- [ ] Add package metadata, changelog, versioning policy, and CI.
+- [ ] CI must run `bun run check`, `bun run test`, `bun run build`, and `git diff --check`.
+- [ ] Publish only after P0 is complete and all P1 gaps are closed.
 
-## Recommended delivery order
+## Delivery order
 
-1. P0 contract foundation.
-2. Subscription-change lookup.
-3. Prices, PaymentMethods, PaymentLinks.
-4. Charges, Invoices, InvoiceItems, Refunds.
-5. Events and TaxDocuments.
-6. Full contract tests, docs, CI, release.
+1. P0 contract and architecture.
+2. Finish payments, checkouts, and subscriptions.
+3. Prices, payment methods, and payment links.
+4. Charges, invoices, invoice items, and refunds.
+5. Full contract tests, README, CI, and release.
