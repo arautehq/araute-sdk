@@ -49,7 +49,6 @@ Rules:
 | `products` | create, list, get | Implemented |
 | `prices` | create, list, get | Missing |
 | `paymentMethods` | list, get | Missing |
-| `paymentLinks` | create, list, get, update | Missing |
 | `checkouts` | create, list, get, expire | Implemented, remove inherited `update` |
 | `payments` | create, list, get, confirm, cancel | Implemented, contract hardening needed |
 | `subscriptions` | create, list, get, update, changes, preview, cancel, pause, resume | Partial; change get missing |
@@ -86,6 +85,7 @@ Rules:
 ### Checkouts
 
 - [ ] Remove `update` from the public type and runtime surface.
+- [ ] Keep customer-facing payment-link creation inside `araute.checkouts`; do not expose a separate `paymentLinks` namespace.
 - [ ] Verify create variants, line items, amount, mode, methods, status, payment status, expiry, and nullable fields.
 - [ ] Test `expire`, idempotency, query filters, and relevant API errors.
 
@@ -108,12 +108,6 @@ Rules:
 - [ ] Add `src/entities/payment-methods/{index,model}.ts` and `araute.paymentMethods`.
 - [ ] Implement `list` and `get` for `/payment_methods` and `/payment_methods/{id}`.
 - [ ] Model supported filters and safe, non-sensitive payment method data.
-
-### Payment links
-
-- [ ] Add `src/entities/payment-links/{index,model}.ts` and `araute.paymentLinks`.
-- [ ] Implement `create`, `list`, `get`, and `update` for `/payment_links`.
-- [ ] Model line items, methods, active state, completion behavior, restrictions, and metadata.
 
 ## P3 — payment execution and billing
 
@@ -161,6 +155,6 @@ Rules:
 
 1. P0 contract and architecture.
 2. Finish payments, checkouts, and subscriptions.
-3. Prices, payment methods, and payment links.
+3. Prices and payment methods.
 4. Invoices and refunds.
 5. Full contract tests, README, CI, and release.
