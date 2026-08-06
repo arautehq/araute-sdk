@@ -6,7 +6,7 @@ export type Customer = {
   object: "customer";
   name?: string | null;
   email?: string | null;
-  tax_id?: string | null;
+  taxId?: string | null;
   phone?: string | null;
   address?: Address;
   currency?: "BRL" | null;
@@ -14,15 +14,15 @@ export type Customer = {
   delinquent: boolean;
   metadata?: Metadata;
   livemode: boolean;
-  created_at: string;
-  updated_at: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 /** Request body for `customers.create(...)`. */
 export type CustomerCreate = {
   name?: string;
   email?: string;
-  tax_id?: string;
+  taxId?: string;
   phone?: string;
   address?: Address;
   metadata?: Metadata;
@@ -32,7 +32,7 @@ export type CustomerCreate = {
 export type CustomerUpdate = {
   name?: string;
   email?: string;
-  tax_id?: string;
+  taxId?: string;
   phone?: string;
   address?: Address;
   metadata?: Metadata;
@@ -41,5 +41,5 @@ export type CustomerUpdate = {
 /** Supported query parameters for `customers.list(...)`. */
 export type CustomerListQuery = ListQuery & {
   email?: string;
-  tax_id?: string;
+  taxId?: string;
 };

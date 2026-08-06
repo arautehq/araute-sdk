@@ -8,20 +8,20 @@ export type WebhookEndpoint = {
   id: string;
   object: "webhook_endpoint";
   url: string;
-  enabled_events: string[];
+  enabledEvents: string[];
   status: WebhookEndpointStatus;
   secret?: string;
   description?: string | null;
   metadata?: Metadata;
   livemode: boolean;
-  created_at: string;
-  updated_at: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 /** Request body for `webhooks.create(...)`. */
 export type WebhookEndpointCreate = {
   url: string;
-  enabled_events: string[];
+  enabledEvents: string[];
   description?: string;
   metadata?: Metadata;
 };
@@ -29,10 +29,10 @@ export type WebhookEndpointCreate = {
 /** Request body for `webhooks.update(...)`. */
 export type WebhookEndpointUpdate = {
   url?: string;
-  enabled_events?: string[];
+  enabledEvents?: string[];
   status?: WebhookEndpointStatus;
   description?: string;
-  roll_secret?: boolean;
+  rollSecret?: boolean;
   metadata?: Metadata;
 };
 

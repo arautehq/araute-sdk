@@ -29,38 +29,38 @@ export type CheckoutSession = {
   object: "checkout_session";
   mode: CheckoutSessionMode;
   status: CheckoutSessionStatus;
-  payment_status: CheckoutSessionPaymentStatus;
+  paymentStatus: CheckoutSessionPaymentStatus;
   url: string;
-  amount_total: number;
+  amountTotal: number;
   currency: "BRL";
-  payment_intent?: string | null;
-  payment_link?: string | null;
-  success_url: string;
-  cancel_url?: string | null;
-  expires_at?: string | null;
+  paymentIntent?: string | null;
+  paymentLink?: string | null;
+  successUrl: string;
+  cancelUrl?: string | null;
+  expiresAt?: string | null;
   customer?: string | null;
   metadata?: Metadata;
   livemode: boolean;
-  created_at: string;
-  updated_at: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 type CheckoutSessionCreateBase = {
   mode?: CheckoutSessionMode;
-  payment_method_types?: CheckoutSessionPaymentMethodType[];
-  success_url: string;
-  cancel_url?: string;
-  expires_at?: string;
+  methods?: CheckoutSessionPaymentMethodType[];
+  successUrl: string;
+  cancelUrl?: string;
+  expiresAt?: string;
   customer?: string;
-  customer_email?: string;
-  customer_name?: string;
-  customer_tax_id?: string;
+  customerEmail?: string;
+  customerName?: string;
+  customerTaxId?: string;
   locale?: string;
   metadata?: Metadata;
 };
 
 type CheckoutSessionCreateWithLineItems = CheckoutSessionCreateBase & {
-  line_items: CheckoutSessionCreateLineItem[];
+  lineItems: CheckoutSessionCreateLineItem[];
   amount?: never;
   currency?: never;
 };
@@ -68,11 +68,11 @@ type CheckoutSessionCreateWithLineItems = CheckoutSessionCreateBase & {
 type CheckoutSessionCreateWithAmount = CheckoutSessionCreateBase & {
   amount: number;
   currency?: "BRL";
-  line_items?: never;
+  lineItems?: never;
 };
 
 type CheckoutSessionCreateWithDeferredMode = CheckoutSessionCreateBase & {
-  line_items?: undefined;
+  lineItems?: undefined;
   amount?: undefined;
   currency?: undefined;
 };
@@ -86,7 +86,7 @@ export type CheckoutSessionCreate =
 /** Supported query parameters for `checkouts.list(...)`. */
 export type CheckoutSessionListQuery = ListQuery & {
   status?: CheckoutSessionStatus;
-  payment_link?: string;
+  paymentLink?: string;
   customer?: string;
 };
 

@@ -7,11 +7,11 @@ export type Product = {
   name: string;
   description?: string | null;
   active: boolean;
-  tax_code?: string | null;
+  taxCode?: string | null;
   metadata?: Metadata;
   livemode: boolean;
-  created_at: string;
-  updated_at: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 /** Request body for `products.create(...)`. */
@@ -19,7 +19,7 @@ export type ProductCreate = {
   name: string;
   description?: string;
   active?: boolean;
-  tax_code?: string;
+  taxCode?: string;
   metadata?: Metadata;
 };
 

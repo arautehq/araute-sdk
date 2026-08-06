@@ -7,15 +7,15 @@ export type Address = {
   line2?: string;
   city?: string;
   state?: string;
-  postal_code?: string;
+  postalCode?: string;
   country?: "BR";
 } | null;
 
 /** Shared keyset pagination query parameters. */
 export type ListQuery = {
   limit?: number;
-  starting_after?: string;
-  ending_before?: string;
+  startingAfter?: string;
+  endingBefore?: string;
 };
 
 /** Standard list envelope returned by Araute collection endpoints. */
@@ -23,8 +23,8 @@ export type ListResponse<T> = {
   object: "list";
   url: string;
   data: T[];
-  has_more: boolean;
-  next_cursor: string | null;
+  hasMore: boolean;
+  nextCursor: string | null;
 };
 
 /** Field-level validation detail returned in RFC 7807 errors. */
@@ -42,9 +42,9 @@ export type Problem = {
   detail?: string | null | undefined;
   code: string;
   param?: string | null | undefined;
-  trace_id?: string | undefined;
+  traceId?: string | undefined;
   errors?: ProblemFieldError[] | undefined;
-  amount_refundable?: number | undefined;
+  amountRefundable?: number | undefined;
 };
 
 /** Deleted resource envelope returned by delete endpoints. */

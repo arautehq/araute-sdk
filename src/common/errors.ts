@@ -19,9 +19,9 @@ export class ArauteError extends Error {
     this.code = problem.code;
     this.detail = problem.detail;
     this.param = problem.param;
-    this.traceId = problem.trace_id;
+    this.traceId = problem.traceId;
     this.errors = problem.errors;
-    this.amountRefundable = problem.amount_refundable;
+    this.amountRefundable = problem.amountRefundable;
   }
 }
 

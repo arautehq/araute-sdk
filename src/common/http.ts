@@ -1,4 +1,5 @@
 import { ArauteError, ArauteTransportError } from "./errors";
+import { toCamelCase, toSnakeCase } from "./case";
 import type { ArauteConfig, Problem, RequestOptions } from "./types";
 
 type HttpMethod = "GET" | "POST" | "PATCH" | "DELETE";
@@ -68,7 +69,7 @@ export class ArauteHttpClient {
     if (query) {
       for (const [key, value] of Object.entries(query)) {
         if (value !== undefined) {
-          url.searchParams.set(key, String(value));
+          url.searchParams.set(camelToSnakeQueryKey(key), String(value));
         }
       }
     }
@@ -92,7 +93,7 @@ export class ArauteHttpClient {
     };
 
     if (body !== undefined) {
-      init.body = JSON.stringify(body);
+      init.body = JSON.stringify(toSnakeCase(body));
     }
 
     if (options?.signal) {
@@ -119,11 +120,11 @@ export class ArauteHttpClient {
         );
       }
 
-      return (await response.json()) as T;
+      return toCamelCase<T>(await response.json());
     }
 
     if (isProblem) {
-      const problem = (await response.json()) as Problem;
+      const problem = toCamelCase<Problem>(await response.json());
       throw new ArauteError(problem);
     }
 
@@ -134,4 +135,8 @@ export class ArauteHttpClient {
       text,
     );
   }
+}
+
+function camelToSnakeQueryKey(key: string) {
+  return key.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
 }

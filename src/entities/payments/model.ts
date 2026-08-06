@@ -16,12 +16,12 @@ export type PaymentMethodType = "PIX" | "CARD";
 /** Normalized next action required to complete a payment. */
 export type PaymentNextAction = {
   type: "pix_display_qr_code" | "redirect_to_url";
-  pix_display_qr_code?: {
+  pixDisplayQrCode?: {
     data?: string;
-    image_url?: string;
-    expires_at?: string;
+    imageUrl?: string;
+    expiresAt?: string;
   };
-  redirect_to_url?: {
+  redirectToUrl?: {
     url?: string;
   };
 } | null;
@@ -29,7 +29,7 @@ export type PaymentNextAction = {
 /** Normalized payment failure details. */
 export type PaymentError = {
   code?: string;
-  decline_code?: string;
+  declineCode?: string;
   message?: string;
 } | null;
 
@@ -39,21 +39,21 @@ export type Payment = {
   object: "payment_intent";
   status: PaymentStatus;
   amount: number;
-  amount_received?: number;
+  amountReceived?: number;
   currency: "BRL";
   customer?: string | null;
   methods: PaymentMethodType[];
-  next_action?: PaymentNextAction;
-  latest_charge?: string | null;
-  last_payment_error?: PaymentError;
-  cancellation_reason?: string | null;
-  checkout_session?: string | null;
+  nextAction?: PaymentNextAction;
+  latestCharge?: string | null;
+  lastPaymentError?: PaymentError;
+  cancellationReason?: string | null;
+  checkoutSession?: string | null;
   invoice?: string | null;
   description?: string | null;
   metadata?: Metadata;
   livemode: boolean;
-  created_at: string;
-  updated_at: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 /** Request body for `payments.create(...)`. */
@@ -68,16 +68,16 @@ export type PaymentCreate = {
 
 /** Request body for `payments.confirm(...)`. */
 export type PaymentConfirm = {
-  payment_method?: string;
-  payment_method_data?: {
+  paymentMethod?: string;
+  paymentMethodData?: {
     type?: PaymentMethodType;
   };
-  return_url?: string;
+  returnUrl?: string;
 };
 
 /** Request body for `payments.cancel(...)`. */
 export type PaymentCancel = {
-  cancellation_reason?:
+  cancellationReason?:
     | "duplicate"
     | "fraudulent"
     | "requested_by_customer"

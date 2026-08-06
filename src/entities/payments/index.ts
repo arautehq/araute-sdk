@@ -12,7 +12,7 @@ import type {
 type QueryParams = Record<string, string | number | boolean | undefined>;
 
 type PaymentWire = Omit<Payment, "methods"> & {
-  payment_method_types: Array<"pix" | "card">;
+  paymentMethodTypes: Array<"pix" | "card">;
 };
 
 function toWireMethod(method: PaymentCreate["methods"][number]) {
@@ -20,26 +20,26 @@ function toWireMethod(method: PaymentCreate["methods"][number]) {
 }
 
 function fromWirePayment(payment: PaymentWire): Payment {
-  const { payment_method_types, ...rest } = payment;
+  const { paymentMethodTypes, ...rest } = payment;
   return {
     ...rest,
-    methods: payment_method_types.map((method) => method.toUpperCase() as Payment["methods"][number]),
+    methods: paymentMethodTypes.map((method) => method.toUpperCase() as Payment["methods"][number]),
   };
 }
 
 function toWireCreate(input: PaymentCreate) {
   const { methods, ...rest } = input;
-  return { ...rest, payment_method_types: methods.map(toWireMethod) };
+  return { ...rest, paymentMethodTypes: methods.map(toWireMethod) };
 }
 
 function toWireConfirm(input?: PaymentConfirm) {
-  if (!input?.payment_method_data?.type) return input;
+  if (!input?.paymentMethodData?.type) return input;
 
   return {
     ...input,
-    payment_method_data: {
-      ...input.payment_method_data,
-      type: toWireMethod(input.payment_method_data.type),
+    paymentMethodData: {
+      ...input.paymentMethodData,
+      type: toWireMethod(input.paymentMethodData.type),
     },
   };
 }

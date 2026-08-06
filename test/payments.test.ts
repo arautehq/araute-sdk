@@ -69,10 +69,10 @@ describe("payments", () => {
     const { calls, client } = clientWithCalls();
 
     await client.payments.confirm("pi_123", {
-      payment_method_data: { type: "PIX" },
+      paymentMethodData: { type: "PIX" },
     });
     await client.payments.cancel("pi_123", {
-      cancellation_reason: "abandoned",
+      cancellationReason: "abandoned",
     });
 
     expect(calls.map((call) => [call.init.method, call.url])).toEqual([

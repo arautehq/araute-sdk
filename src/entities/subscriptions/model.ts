@@ -47,8 +47,8 @@ export type SubscriptionItem = {
   object: "subscription_item";
   price: string;
   quantity: number;
-  current_period_start: string;
-  current_period_end: string;
+  currentPeriodStart: string;
+  currentPeriodEnd: string;
   metadata?: Metadata;
 };
 
@@ -71,16 +71,16 @@ export type SubscriptionChange = {
   object: "subscription_change";
   status: SubscriptionChangeStatus;
   subscription: string;
-  proration_policy?: SubscriptionProrationPolicy;
-  proration_amount?: number;
-  proration_lines?: ProrationLine[];
+  prorationPolicy?: SubscriptionProrationPolicy;
+  prorationAmount?: number;
+  prorationLines?: ProrationLine[];
   diff?: SubscriptionChangeDiff | null;
   invoice?: string | null;
-  payment_intent?: string | null;
-  effective_at?: string | null;
-  applied_at?: string | null;
-  created_at?: string;
-  updated_at?: string;
+  paymentIntent?: string | null;
+  effectiveAt?: string | null;
+  appliedAt?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 /** Subscription resource returned by the Araute API. */
@@ -89,27 +89,27 @@ export type Subscription = {
   object: "subscription";
   status: SubscriptionStatus;
   customer: string;
-  collection_method: SubscriptionCollectionMethod;
-  payment_method_type?: SubscriptionPaymentMethodType | null;
-  default_payment_method?: string | null;
+  collectionMethod: SubscriptionCollectionMethod;
+  paymentMethodType?: SubscriptionPaymentMethodType | null;
+  defaultPaymentMethod?: string | null;
   items: SubscriptionItem[];
-  billing_cycle_anchor?: string | null;
-  trial_start?: string | null;
-  trial_end?: string | null;
-  trial_end_behavior?: SubscriptionTrialEndBehavior | null;
-  cancel_at_period_end?: boolean;
-  cancel_at?: string | null;
-  cancelled_at?: string | null;
-  cancellation_details?: CancellationDetails;
-  grace_period_days?: number;
-  latest_invoice?: string | null;
-  pending_change?: SubscriptionChange | null;
-  latest_change?: string | null;
-  pix_mandate?: string | null;
+  billingCycleAnchor?: string | null;
+  trialStart?: string | null;
+  trialEnd?: string | null;
+  trialEndBehavior?: SubscriptionTrialEndBehavior | null;
+  cancelAtPeriodEnd?: boolean;
+  cancelAt?: string | null;
+  cancelledAt?: string | null;
+  cancellationDetails?: CancellationDetails;
+  gracePeriodDays?: number;
+  latestInvoice?: string | null;
+  pendingChange?: SubscriptionChange | null;
+  latestChange?: string | null;
+  pixMandate?: string | null;
   metadata?: Metadata;
   livemode: boolean;
-  created_at: string;
-  updated_at: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 /** Item payload used by `subscriptions.create(...)`. */
@@ -122,16 +122,16 @@ export type SubscriptionCreateItem = {
 export type SubscriptionCreate = {
   customer: string;
   items: SubscriptionCreateItem[];
-  payment_method?: string;
-  payment_method_type?: "pix_manual";
-  collection_method?: SubscriptionCollectionMethod;
-  trial_period_days?: number;
-  trial_end?: string;
-  trial_end_behavior?: SubscriptionTrialEndBehavior;
-  billing_cycle_anchor?: "now" | string;
-  proration_policy?: SubscriptionProrationPolicy;
-  grace_period_days?: number;
-  cancel_at_period_end?: boolean;
+  paymentMethod?: string;
+  paymentMethodType?: "pix_manual";
+  collectionMethod?: SubscriptionCollectionMethod;
+  trialPeriodDays?: number;
+  trialEnd?: string;
+  trialEndBehavior?: SubscriptionTrialEndBehavior;
+  billingCycleAnchor?: "now" | string;
+  prorationPolicy?: SubscriptionProrationPolicy;
+  gracePeriodDays?: number;
+  cancelAtPeriodEnd?: boolean;
   metadata?: Metadata;
 };
 
@@ -152,54 +152,54 @@ export type AddInvoiceItem = {
 /** Request body for `subscriptions.update(...)`. */
 export type SubscriptionUpdate = {
   items?: SubscriptionItemUpdate[];
-  add_invoice_items?: AddInvoiceItem[];
-  billing_cycle_anchor?: "now" | string;
-  payment_method?: string;
-  proration_policy?: SubscriptionProrationPolicy;
-  proration_date?: string;
-  cancel_at_period_end?: boolean;
+  addInvoiceItems?: AddInvoiceItem[];
+  billingCycleAnchor?: "now" | string;
+  paymentMethod?: string;
+  prorationPolicy?: SubscriptionProrationPolicy;
+  prorationDate?: string;
+  cancelAtPeriodEnd?: boolean;
   metadata?: Metadata;
 };
 
 /** Request body for `subscriptions.createChange(...)`. */
 export type SubscriptionChangeCreate = {
   items?: SubscriptionItemUpdate[];
-  add_invoice_items?: AddInvoiceItem[];
-  billing_cycle_anchor?: "now" | string;
-  payment_method?: string;
-  proration_policy?: SubscriptionProrationPolicy;
-  proration_date?: string;
-  effective_at?: "now" | string;
+  addInvoiceItems?: AddInvoiceItem[];
+  billingCycleAnchor?: "now" | string;
+  paymentMethod?: string;
+  prorationPolicy?: SubscriptionProrationPolicy;
+  prorationDate?: string;
+  effectiveAt?: "now" | string;
   metadata?: Metadata;
 };
 
 /** Request body for `subscriptions.previewChange(...)`. */
 export type SubscriptionChangePreviewRequest = {
   items?: SubscriptionItemUpdate[];
-  add_invoice_items?: AddInvoiceItem[];
-  billing_cycle_anchor?: "now" | string;
-  payment_method?: string;
-  proration_policy?: SubscriptionProrationPolicy;
-  proration_date: string;
-  cancel_at_period_end?: boolean;
+  addInvoiceItems?: AddInvoiceItem[];
+  billingCycleAnchor?: "now" | string;
+  paymentMethod?: string;
+  prorationPolicy?: SubscriptionProrationPolicy;
+  prorationDate: string;
+  cancelAtPeriodEnd?: boolean;
 };
 
 /** Preview payload returned by `subscriptions.previewChange(...)`. */
 export type SubscriptionChangePreview = {
   object: "subscription_change_preview";
   subscription: string;
-  proration_date: string;
-  proration_policy?: SubscriptionProrationPolicy;
-  proration_amount?: number;
+  prorationDate: string;
+  prorationPolicy?: SubscriptionProrationPolicy;
+  prorationAmount?: number;
   lines?: ProrationLine[];
   currency: "BRL";
 };
 
 /** Request body for `subscriptions.cancel(...)`. */
 export type SubscriptionCancel = {
-  cancel_at_period_end?: boolean;
+  cancelAtPeriodEnd?: boolean;
   prorate?: boolean;
-  cancellation_details?: {
+  cancellationDetails?: {
     reason?: CancellationReason;
     feedback?: string;
   };
@@ -207,13 +207,13 @@ export type SubscriptionCancel = {
 
 /** Request body for `subscriptions.pause(...)`. */
 export type SubscriptionPause = {
-  resumes_at?: string;
-  entitlement_behavior?: "keep" | "revoke";
+  resumesAt?: string;
+  entitlementBehavior?: "keep" | "revoke";
 };
 
 /** Request body for `subscriptions.resume(...)`. */
 export type SubscriptionResume = {
-  payment_method?: string;
+  paymentMethod?: string;
 };
 
 /** Supported query parameters for `subscriptions.list(...)`. */
