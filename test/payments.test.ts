@@ -33,10 +33,12 @@ describe("payments", () => {
   test("creates a payment intent with idempotency", async () => {
     const { calls, client } = clientWithCalls();
 
-    await client.payments.create(
+    const result = await client.payments.create(
       { amount: 100, methods: ["PIX"] },
       { idempotencyKey: "idem_123" },
     );
+
+    expect(result.methods).toEqual(["PIX"]);
 
     expect(calls[0]?.url).toBe(
       "https://api.araute.com/v1/payment_intents",
