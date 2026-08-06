@@ -55,7 +55,6 @@ Rules:
 | `charges` | list, get | Missing |
 | `subscriptions` | create, list, get, update, changes, preview, cancel, pause, resume | Partial; change get missing |
 | `invoices` | create, list, get, add item, finalize, pay, void, mark uncollectible | Missing |
-| `invoiceItems` | get, delete | Missing |
 | `refunds` | create, list, get | Missing |
 
 ## P0 — contract and architecture foundation
@@ -130,11 +129,6 @@ Rules:
 - [ ] Add `addItem`, `finalize`, `pay`, `void`, and `markUncollectible`.
 - [ ] Model invoice state, collection method, billing reason, totals, payment intent, hosted URL, PDF, dates, periods, and lines.
 - [ ] Encode action-specific bodies and no-body actions exactly.
-
-### Invoice items
-
-- [ ] Add `araute.invoiceItems` with `get` and `delete`.
-- [ ] Model invoice attachment, quantity, unit amount, amount, proration, discountable, and metadata.
 
 ### Refunds
 
