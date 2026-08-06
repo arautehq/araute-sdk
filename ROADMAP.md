@@ -28,7 +28,7 @@ OpenAPI version: `3.1.0`. API base: `https://api.araute.com/v1`.
 | PaymentMethods | Missing | — |
 | PaymentLinks | Missing | — |
 | CheckoutSessions | Partial | create, list, get, expire; inherited `update` must be removed |
-| PaymentIntents / Payments | Partial | create, list, get, confirm, cancel; attempts missing; facade named `payments` |
+| PaymentIntents / Payments | Partial | create, list, get, confirm, cancel; attempt history intentionally omitted; facade named `payments` |
 | Charges | Missing | — |
 | Subscriptions | Partial | CRUD, changes create/list, preview, cancel, pause, resume; change get missing |
 | Invoices | Missing | — |
@@ -55,8 +55,7 @@ Do before adding many resources.
 
 ### Payments / PaymentIntents
 
-- [ ] Add `payments.listAttempts(id, query?, options?)` for `GET /payment_intents/{id}/attempts`.
-- [ ] Add `PaymentAttempt` model and list response.
+- [x] Intentionally omit `payments.listAttempts(...)` and `PaymentAttempt` from the public SDK; endpoint is available directly in the API but not needed by SDK consumers.
 - [ ] Align `methods` / `payment_method_types` translation with OpenAPI request and response schemas.
 - [ ] Test uppercase public enums for payment status, method type, next action, attempt status, and error fields.
 
@@ -163,7 +162,7 @@ Do before adding many resources.
 ## Recommended delivery order
 
 1. P0 contract foundation.
-2. Payment attempts and subscription-change lookup.
+2. Subscription-change lookup.
 3. Prices, PaymentMethods, PaymentLinks.
 4. Charges, Invoices, InvoiceItems, Refunds.
 5. Events and TaxDocuments.
