@@ -20,7 +20,7 @@ export type ListQuery = {
 
 /** Standard list envelope returned by Araute collection endpoints. */
 export type ListResponse<T> = {
-  object: "list";
+  object: "LIST";
   url: string;
   data: T[];
   hasMore: boolean;

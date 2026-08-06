@@ -2,20 +2,20 @@ import type { ListQuery, Metadata } from "../../common/types";
 
 /** Payment lifecycle status returned by the Payment Intent API. */
 export type PaymentStatus =
-  | "requires_payment_method"
-  | "requires_confirmation"
-  | "requires_action"
-  | "processing"
-  | "succeeded"
-  | "cancelled"
-  | "expired";
+  | "REQUIRES_PAYMENT_METHOD"
+  | "REQUIRES_CONFIRMATION"
+  | "REQUIRES_ACTION"
+  | "PROCESSING"
+  | "SUCCEEDED"
+  | "CANCELLED"
+  | "EXPIRED";
 
 /** Payment methods accepted by the SDK. */
 export type PaymentMethodType = "PIX" | "CARD";
 
 /** Normalized next action required to complete a payment. */
 export type PaymentNextAction = {
-  type: "pix_display_qr_code" | "redirect_to_url";
+  type: "PIX_DISPLAY_QR_CODE" | "REDIRECT_TO_URL";
   pixDisplayQrCode?: {
     data?: string;
     imageUrl?: string;
@@ -36,7 +36,7 @@ export type PaymentError = {
 /** Payment returned by the Araute Payment Intent API. */
 export type Payment = {
   id: string;
-  object: "payment_intent";
+  object: "PAYMENT_INTENT";
   status: PaymentStatus;
   amount: number;
   amountReceived?: number;
@@ -78,10 +78,10 @@ export type PaymentConfirm = {
 /** Request body for `payments.cancel(...)`. */
 export type PaymentCancel = {
   cancellationReason?:
-    | "duplicate"
-    | "fraudulent"
-    | "requested_by_customer"
-    | "abandoned";
+    | "DUPLICATE"
+    | "FRAUDULENT"
+    | "REQUESTED_BY_CUSTOMER"
+    | "ABANDONED";
 };
 
 /** Supported query parameters for `payments.list(...)`. */

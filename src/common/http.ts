@@ -1,5 +1,5 @@
 import { ArauteError, ArauteTransportError } from "./errors";
-import { toCamelCase, toSnakeCase } from "./case";
+import { toCamelCase, toSnakeCase, toWireEnum } from "./case";
 import type { ArauteConfig, Problem, RequestOptions } from "./types";
 
 type HttpMethod = "GET" | "POST" | "PATCH" | "DELETE";
@@ -69,7 +69,7 @@ export class ArauteHttpClient {
     if (query) {
       for (const [key, value] of Object.entries(query)) {
         if (value !== undefined) {
-          url.searchParams.set(camelToSnakeQueryKey(key), String(value));
+          url.searchParams.set(camelToSnakeQueryKey(key), String(toWireEnum(value)));
         }
       }
     }

@@ -1,12 +1,12 @@
 import type { ListQuery, Metadata } from "../../common/types";
 
 /** Current enablement state for a webhook endpoint. */
-export type WebhookEndpointStatus = "enabled" | "disabled";
+export type WebhookEndpointStatus = "ENABLED" | "DISABLED";
 
 /** Webhook endpoint resource returned by the Araute API. */
 export type WebhookEndpoint = {
   id: string;
-  object: "webhook_endpoint";
+  object: "WEBHOOK_ENDPOINT";
   url: string;
   enabledEvents: string[];
   status: WebhookEndpointStatus;

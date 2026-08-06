@@ -3,19 +3,19 @@ import { CrudResource } from "../../common/resource";
 import type { ListQuery, Metadata, RequestOptions } from "../../common/types";
 
 /** Supported checkout session modes. */
-export type CheckoutSessionMode = "payment" | "subscription";
+export type CheckoutSessionMode = "PAYMENT" | "SUBSCRIPTION";
 
 /** Lifecycle status for a checkout session. */
-export type CheckoutSessionStatus = "open" | "complete" | "expired";
+export type CheckoutSessionStatus = "OPEN" | "COMPLETE" | "EXPIRED";
 
 /** Derived payment status exposed by checkout sessions. */
 export type CheckoutSessionPaymentStatus =
-  | "unpaid"
-  | "paid"
-  | "no_payment_required";
+  | "UNPAID"
+  | "PAID"
+  | "NO_PAYMENT_REQUIRED";
 
 /** Supported payment method types for checkout session creation. */
-export type CheckoutSessionPaymentMethodType = "pix" | "card";
+export type CheckoutSessionPaymentMethodType = "PIX" | "CARD";
 
 /** Line item payload used by `checkouts.create(...)`. */
 export type CheckoutSessionCreateLineItem = {
@@ -26,7 +26,7 @@ export type CheckoutSessionCreateLineItem = {
 /** Checkout session resource returned by the Araute API. */
 export type CheckoutSession = {
   id: string;
-  object: "checkout_session";
+  object: "CHECKOUT_SESSION";
   mode: CheckoutSessionMode;
   status: CheckoutSessionStatus;
   paymentStatus: CheckoutSessionPaymentStatus;

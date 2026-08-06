@@ -3,7 +3,7 @@ import type { Address, ListQuery, Metadata } from "../../common/types";
 /** Customer resource returned by the Araute API. */
 export type Customer = {
   id: string;
-  object: "customer";
+  object: "CUSTOMER";
   name?: string | null;
   email?: string | null;
   taxId?: string | null;

@@ -1,50 +1,31 @@
 import type { ListQuery, Metadata } from "../../common/types";
 
 export type SubscriptionStatus =
-  | "incomplete"
-  | "active"
-  | "trialing"
-  | "past_due"
-  | "unpaid"
-  | "paused"
-  | "cancelled";
+  | "INCOMPLETE" | "ACTIVE" | "TRIALING" | "PAST_DUE" | "UNPAID" | "PAUSED" | "CANCELLED";
 
 export type SubscriptionCollectionMethod =
-  | "charge_automatically"
-  | "send_invoice";
+  | "CHARGE_AUTOMATICALLY" | "SEND_INVOICE";
 
-export type SubscriptionPaymentMethodType = "card" | "pix_manual";
+export type SubscriptionPaymentMethodType = "CARD" | "PIX_MANUAL";
 
 export type SubscriptionTrialEndBehavior =
-  | "cancel"
-  | "pause"
-  | "create_invoice";
+  | "CANCEL" | "PAUSE" | "CREATE_INVOICE";
 
 export type SubscriptionProrationPolicy =
-  | "charge_now"
-  | "next_cycle"
-  | "credit"
-  | "none";
+  | "CHARGE_NOW" | "NEXT_CYCLE" | "CREDIT" | "NONE";
 
 export type SubscriptionChangeStatus =
-  | "pending"
-  | "applied"
-  | "payment_failed"
-  | "expired"
-  | "cancelled";
+  | "PENDING" | "APPLIED" | "PAYMENT_FAILED" | "EXPIRED" | "CANCELLED";
 
 export type SubscriptionChangeDiff = Record<string, unknown>;
 
 export type CancellationReason =
-  | "requested_by_customer"
-  | "payment_failure"
-  | "fraud"
-  | "other";
+  | "REQUESTED_BY_CUSTOMER" | "PAYMENT_FAILURE" | "FRAUD" | "OTHER";
 
 /** Subscription item attached to a subscription. */
 export type SubscriptionItem = {
   id: string;
-  object: "subscription_item";
+  object: "SUBSCRIPTION_ITEM";
   price: string;
   quantity: number;
   currentPeriodStart: string;
@@ -68,7 +49,7 @@ export type ProrationLine = {
 /** Subscription change resource returned by the Araute API. */
 export type SubscriptionChange = {
   id: string;
-  object: "subscription_change";
+  object: "SUBSCRIPTION_CHANGE";
   status: SubscriptionChangeStatus;
   subscription: string;
   prorationPolicy?: SubscriptionProrationPolicy;
@@ -86,7 +67,7 @@ export type SubscriptionChange = {
 /** Subscription resource returned by the Araute API. */
 export type Subscription = {
   id: string;
-  object: "subscription";
+  object: "SUBSCRIPTION";
   status: SubscriptionStatus;
   customer: string;
   collectionMethod: SubscriptionCollectionMethod;
@@ -123,12 +104,12 @@ export type SubscriptionCreate = {
   customer: string;
   items: SubscriptionCreateItem[];
   paymentMethod?: string;
-  paymentMethodType?: "pix_manual";
+  paymentMethodType?: "PIX_MANUAL";
   collectionMethod?: SubscriptionCollectionMethod;
   trialPeriodDays?: number;
   trialEnd?: string;
   trialEndBehavior?: SubscriptionTrialEndBehavior;
-  billingCycleAnchor?: "now" | string;
+  billingCycleAnchor?: "NOW" | string;
   prorationPolicy?: SubscriptionProrationPolicy;
   gracePeriodDays?: number;
   cancelAtPeriodEnd?: boolean;
@@ -153,7 +134,7 @@ export type AddInvoiceItem = {
 export type SubscriptionUpdate = {
   items?: SubscriptionItemUpdate[];
   addInvoiceItems?: AddInvoiceItem[];
-  billingCycleAnchor?: "now" | string;
+  billingCycleAnchor?: "NOW" | string;
   paymentMethod?: string;
   prorationPolicy?: SubscriptionProrationPolicy;
   prorationDate?: string;
@@ -165,11 +146,11 @@ export type SubscriptionUpdate = {
 export type SubscriptionChangeCreate = {
   items?: SubscriptionItemUpdate[];
   addInvoiceItems?: AddInvoiceItem[];
-  billingCycleAnchor?: "now" | string;
+  billingCycleAnchor?: "NOW" | string;
   paymentMethod?: string;
   prorationPolicy?: SubscriptionProrationPolicy;
   prorationDate?: string;
-  effectiveAt?: "now" | string;
+  effectiveAt?: "NOW" | string;
   metadata?: Metadata;
 };
 
@@ -177,7 +158,7 @@ export type SubscriptionChangeCreate = {
 export type SubscriptionChangePreviewRequest = {
   items?: SubscriptionItemUpdate[];
   addInvoiceItems?: AddInvoiceItem[];
-  billingCycleAnchor?: "now" | string;
+  billingCycleAnchor?: "NOW" | string;
   paymentMethod?: string;
   prorationPolicy?: SubscriptionProrationPolicy;
   prorationDate: string;
@@ -186,7 +167,7 @@ export type SubscriptionChangePreviewRequest = {
 
 /** Preview payload returned by `subscriptions.previewChange(...)`. */
 export type SubscriptionChangePreview = {
-  object: "subscription_change_preview";
+  object: "SUBSCRIPTION_CHANGE_PREVIEW";
   subscription: string;
   prorationDate: string;
   prorationPolicy?: SubscriptionProrationPolicy;
@@ -208,7 +189,7 @@ export type SubscriptionCancel = {
 /** Request body for `subscriptions.pause(...)`. */
 export type SubscriptionPause = {
   resumesAt?: string;
-  entitlementBehavior?: "keep" | "revoke";
+  entitlementBehavior?: "KEEP" | "REVOKE";
 };
 
 /** Request body for `subscriptions.resume(...)`. */

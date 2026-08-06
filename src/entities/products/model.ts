@@ -3,7 +3,7 @@ import type { ListQuery, Metadata } from "../../common/types";
 /** Product resource returned by the Araute API. */
 export type Product = {
   id: string;
-  object: "product";
+  object: "PRODUCT";
   name: string;
   description?: string | null;
   active: boolean;

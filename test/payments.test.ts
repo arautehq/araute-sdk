@@ -39,6 +39,8 @@ describe("payments", () => {
     );
 
     expect(result.methods).toEqual(["PIX"]);
+    expect(result.status).toBe("REQUIRES_CONFIRMATION");
+    expect(result.object).toBe("PAYMENT_INTENT");
 
     expect(calls[0]?.url).toBe(
       "https://api.araute.com/v1/payment_intents",
@@ -74,7 +76,7 @@ describe("payments", () => {
       paymentMethodData: { type: "PIX" },
     });
     await client.payments.cancel("pi_123", {
-      cancellationReason: "abandoned",
+      cancellationReason: "ABANDONED",
     });
 
     expect(calls.map((call) => [call.init.method, call.url])).toEqual([
