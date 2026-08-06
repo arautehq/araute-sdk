@@ -52,7 +52,6 @@ Rules:
 | `paymentLinks` | create, list, get, update | Missing |
 | `checkouts` | create, list, get, expire | Implemented, remove inherited `update` |
 | `payments` | create, list, get, confirm, cancel | Implemented, contract hardening needed |
-| `charges` | list, get | Missing |
 | `subscriptions` | create, list, get, update, changes, preview, cancel, pause, resume | Partial; change get missing |
 | `invoices` | create, list, get, add item, finalize, pay, void, mark uncollectible | Missing |
 | `refunds` | create, list, get | Missing |
@@ -118,11 +117,6 @@ Rules:
 
 ## P3 — payment execution and billing
 
-### Charges
-
-- [ ] Add `araute.charges` with `list` and `get`.
-- [ ] Model status, failure data, refunds, disputes, receipt fields, and payment-intent relation.
-
 ### Invoices
 
 - [ ] Add `araute.invoices` with `create`, `list`, and `get`.
@@ -168,5 +162,5 @@ Rules:
 1. P0 contract and architecture.
 2. Finish payments, checkouts, and subscriptions.
 3. Prices, payment methods, and payment links.
-4. Charges, invoices, invoice items, and refunds.
+4. Invoices and refunds.
 5. Full contract tests, README, CI, and release.
