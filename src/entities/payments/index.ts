@@ -12,11 +12,11 @@ import type {
 type QueryParams = Record<string, string | number | boolean | undefined>;
 
 type PaymentWire = Omit<Payment, "methods"> & {
-  paymentMethodTypes: Array<"pix" | "card">;
+  paymentMethodTypes: string[];
 };
 
 function toWireMethod(method: PaymentCreate["methods"][number]) {
-  return method.toLowerCase() as "pix" | "card";
+  return method.toLowerCase();
 }
 
 function fromWirePayment(payment: PaymentWire): Payment {

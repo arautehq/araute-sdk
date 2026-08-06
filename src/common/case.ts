@@ -33,6 +33,7 @@ const ENUM_VALUES = new Set([
   "charge_automatically", "charge_now", "complete", "create_invoice",
   "credit", "customer", "disabled", "duplicate", "enabled", "expired",
   "fraud", "fraudulent", "incomplete", "keep", "list", "no_payment_required",
+  "other",
   "none", "now", "open", "paid", "past_due", "pause", "paused", "payment",
   "payment_failed", "payment_failure", "payment_intent", "pix",
   "pix_display_qr_code", "pix_manual", "processing", "redirect_to_url",
