@@ -10,8 +10,8 @@ export type PaymentStatus =
   | "cancelled"
   | "expired";
 
-/** Payment methods accepted when creating a payment. */
-export type PaymentMethodType = "pix" | "card";
+/** Payment methods accepted by the SDK. */
+export type PaymentMethodType = "PIX" | "CARD";
 
 /** Normalized next action required to complete a payment. */
 export type PaymentNextAction = {
@@ -42,7 +42,7 @@ export type Payment = {
   amount_received?: number;
   currency: "BRL";
   customer?: string | null;
-  payment_method_types: PaymentMethodType[];
+  methods: PaymentMethodType[];
   next_action?: PaymentNextAction;
   latest_charge?: string | null;
   last_payment_error?: PaymentError;
@@ -60,7 +60,7 @@ export type Payment = {
 export type PaymentCreate = {
   amount: number;
   currency?: "BRL";
-  payment_method_types: PaymentMethodType[];
+  methods: PaymentMethodType[];
   customer?: string;
   description?: string;
   metadata?: Metadata;
