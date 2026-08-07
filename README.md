@@ -1,4 +1,4 @@
-# @araute/sdk
+# Araute Typescript SDK
 
 Create and manage Araute payments from TypeScript, Bun, or Node.js.
 
@@ -32,16 +32,6 @@ const checkout = await araute.checkouts.create({
 console.log(checkout.url);
 ```
 
-The default API URL is `https://api.araute.com/v1`. You can override it, provide a custom `fetch`, or add a user-agent suffix:
-
-```ts
-const araute = new Araute({
-  apiKey: process.env.ARAUTE_API_KEY!,
-  baseUrl: "https://api.example.com/v1",
-  userAgent: "my-store/1.0.0",
-});
-```
-
 ## Resources
 
 All methods return promises. Most resources support `create`, `list`, and `get`; customers, products, and subscriptions also support updates where defined.
@@ -69,17 +59,6 @@ const payment = await araute.payments.create({
   methods: ["PIX"],
 });
 ```
-
-Available namespaces:
-
-- `customers` — create, list, retrieve, and update customers
-- `products` — create, list, retrieve, and update products
-- `prices` — create, list, and retrieve prices
-- `checkouts` — create, list, retrieve, and expire checkout sessions
-- `payments` — create, list, retrieve, confirm, and cancel payment intents
-- `subscriptions` — create, list, retrieve, update, pause, resume, cancel, and preview or apply changes
-- `invoices` — create, list, retrieve, add items, finalize, pay, void, and mark uncollectible
-- `refunds` — create, list, and retrieve refunds
 
 ## Errors
 

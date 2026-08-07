@@ -31,7 +31,7 @@ Rules:
 
 ### Already implemented
 
-- Shared client with bearer auth, configurable base URL, custom `fetch`, abort signals, headers, and user agent.
+- Shared client with bearer auth, fixed base URL, fixed user agent, abort signals, and headers.
 - Recursive camelCase/snake_case conversion at the HTTP boundary.
 - Uppercase public enum conversion and payment `methods` mapping.
 - Keyset pagination types: `limit`, `startingAfter`, `endingBefore`.
