@@ -1,0 +1,33 @@
+name: Feature request
+description: Propose an improvement to the SDK
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please search existing issues first and describe the user problem, not only the implementation.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+      description: What are you trying to accomplish, and what is difficult today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe the API or behavior you would like to see.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: textarea
+    id: api_impact
+    attributes:
+      label: API or compatibility considerations
+      description: Note any breaking-change, runtime, or TypeScript concerns.

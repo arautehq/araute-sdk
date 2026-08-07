@@ -19,6 +19,7 @@
   "scripts": {
     "build": "tsdown",
     "check": "tsc -p tsconfig.json",
+    "lint": "biome ci .",
     "test": "bun test",
     "pack": "bun pm pack",
     "publish:dry-run": "bun publish --dry-run"
@@ -45,6 +46,7 @@
   },
   "homepage": "https://github.com/arautehq/araute-sdk#readme",
   "devDependencies": {
+    "@biomejs/biome": "^2.5.7",
     "tsdown": "^0.16.6",
     "typescript": "^5.9.2"
   }
