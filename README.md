@@ -1,4 +1,4 @@
-# @araute/sdk
+# Araute Typescript SDK
 
 Create and manage Araute payments from TypeScript, Bun, or Node.js.
 
