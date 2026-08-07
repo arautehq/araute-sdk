@@ -60,17 +60,6 @@ const payment = await araute.payments.create({
 });
 ```
 
-Available namespaces:
-
-- `customers` — create, list, retrieve, and update customers
-- `products` — create, list, retrieve, and update products
-- `prices` — create, list, and retrieve prices
-- `checkouts` — create, list, retrieve, and expire checkout sessions
-- `payments` — create, list, retrieve, confirm, and cancel payment intents
-- `subscriptions` — create, list, retrieve, update, pause, resume, cancel, and preview or apply changes
-- `invoices` — create, list, retrieve, add items, finalize, pay, void, and mark uncollectible
-- `refunds` — create, list, and retrieve refunds
-
 ## Errors
 
 API problem responses throw `ArauteError`:
