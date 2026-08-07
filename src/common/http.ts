@@ -9,7 +9,6 @@ const DEFAULT_BASE_URL = "https://api.araute.com/v1";
 export class ArauteHttpClient {
   private readonly apiKey: string;
   private readonly baseUrl: string;
-  private readonly fetchImpl: typeof fetch;
   private readonly userAgent: string;
 
   constructor(config: ArauteConfig) {
@@ -17,13 +16,12 @@ export class ArauteHttpClient {
       throw new Error("Araute apiKey is required.");
     }
 
-    if (typeof fetch !== "function") {
+    if (typeof globalThis.fetch !== "function") {
       throw new Error("Global fetch is unavailable.");
     }
 
     this.apiKey = config.apiKey;
     this.baseUrl = DEFAULT_BASE_URL;
-    this.fetchImpl = fetch;
     this.userAgent = "araute-sdk/0.1.0";
   }
 
@@ -98,7 +96,7 @@ export class ArauteHttpClient {
       init.signal = options.signal;
     }
 
-    const response = await this.fetchImpl(url, init);
+    const response = await globalThis.fetch(url, init);
 
     if (response.status === 204) {
       return undefined as T;

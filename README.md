@@ -32,8 +32,6 @@ const checkout = await araute.checkouts.create({
 console.log(checkout.url);
 ```
 
-Requests always go to `https://api.araute.com/v1` with a fixed SDK user agent.
-
 ## Resources
 
 All methods return promises. Most resources support `create`, `list`, and `get`; customers, products, and subscriptions also support updates where defined.
