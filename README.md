@@ -1,8 +1,8 @@
 # Araute Typescript SDK
 
-Build payment experiences that feel native to your TypeScript app. The Araute SDK gives you a clean, type-safe way to create checkouts, manage customers and subscriptions, process payments, and handle refunds from Bun or Node.js.
+Create and manage Araute payments from TypeScript, Bun, or Node.js.
 
-Spend less time wiring API details and more time shipping: typed resource clients, camelCase request and response fields, pagination, retries, cancellation, and actionable API errors are included out of the box.
+The SDK gives you typed resource clients, camelCase request and response fields, and consistent handling for pagination, retries, cancellation, and API errors.
 
 ## Install
 
