@@ -1,5 +1,7 @@
 # Araute Typescript SDK
 
+[![npm version](https://img.shields.io/npm/v/%40araute%2Fsdk?logo=npm)](https://www.npmjs.com/package/@araute/sdk)
+
 Create and manage Araute payments from TypeScript, Bun, or Node.js.
 
 The SDK gives you typed resource clients, camelCase request and response fields, and consistent handling for pagination, retries, cancellation, and API errors.
