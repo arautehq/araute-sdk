@@ -1,6 +1,6 @@
 # Araute TypeScript SDK Roadmap
 
-Source of truth: monorepo `openapi.yaml` (vendored snapshot: `./openapi.yaml` in this package for CI).
+Source of truth: monorepo `openapi.yaml` (not vendored in this package).
 
 API base: `https://api.araute.com/v1`
 SDK package: `@araute/sdk`
