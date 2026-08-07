@@ -17,16 +17,14 @@ export class ArauteHttpClient {
       throw new Error("Araute apiKey is required.");
     }
 
-    if (typeof fetch !== "function" && !config.fetch) {
-      throw new Error("Global fetch is unavailable. Provide config.fetch.");
+    if (typeof fetch !== "function") {
+      throw new Error("Global fetch is unavailable.");
     }
 
     this.apiKey = config.apiKey;
-    this.baseUrl = (config.baseUrl ?? DEFAULT_BASE_URL).replace(/\/+$/, "");
-    this.fetchImpl = config.fetch ?? fetch;
-    this.userAgent = config.userAgent
-      ? `araute-sdk/0.1.0 ${config.userAgent}`
-      : "araute-sdk/0.1.0";
+    this.baseUrl = DEFAULT_BASE_URL;
+    this.fetchImpl = fetch;
+    this.userAgent = "araute-sdk/0.1.0";
   }
 
   get<T>(

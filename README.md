@@ -32,15 +32,7 @@ const checkout = await araute.checkouts.create({
 console.log(checkout.url);
 ```
 
-The default API URL is `https://api.araute.com/v1`. You can override it, provide a custom `fetch`, or add a user-agent suffix:
-
-```ts
-const araute = new Araute({
-  apiKey: process.env.ARAUTE_API_KEY!,
-  baseUrl: "https://api.example.com/v1",
-  userAgent: "my-store/1.0.0",
-});
-```
+Requests always go to `https://api.araute.com/v1` with a fixed SDK user agent.
 
 ## Resources
 

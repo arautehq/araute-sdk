@@ -70,13 +70,4 @@ export type RequestOptions = {
 export type ArauteConfig = {
   /** Secret API key used for bearer authentication. */
   apiKey: string;
-
-  /** Override for the API base URL. Defaults to `https://api.araute.com/v1`. */
-  baseUrl?: string;
-
-  /** Custom fetch implementation, useful for tests and non-default runtimes. */
-  fetch?: typeof fetch;
-
-  /** Extra user agent suffix appended to the SDK user agent. */
-  userAgent?: string;
 };
