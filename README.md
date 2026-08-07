@@ -9,7 +9,9 @@ The SDK gives you typed resource clients, camelCase request and response fields,
 ## Install
 
 ```bash
+# Install the SDK using your preferred package manager.
 npm install @araute/sdk
+
 # or: pnpm add @araute/sdk
 # or: bun add @araute/sdk
 ```
@@ -83,8 +85,12 @@ try {
 ## Development
 
 ```bash
+# Install dependencies, run checks and tests, then build the SDK.
 bun install
+
 bun run check
+
 bun test
+
 bun run build
 ```
