@@ -81,23 +81,6 @@ Available namespaces:
 - `invoices` — create, list, retrieve, add items, finalize, pay, void, and mark uncollectible
 - `refunds` — create, list, and retrieve refunds
 
-## Conventions
-
-- Use camelCase in TypeScript: `taxId`, `successUrl`, `unitAmount`, and `paymentMethod`.
-- Enum values are uppercase: `"PIX"`, `"CARD"`, `"SUCCEEDED"`, and `"MONTH"`.
-- Amounts are integers in the currency’s smallest unit. The SDK currently types Araute currency as `BRL`.
-- List methods return `{ object, url, data, hasMore, nextCursor }` and support keyset pagination with `limit`, `startingAfter`, and `endingBefore`.
-- Use an idempotency key for retryable `POST` operations:
-
-```ts
-const payment = await araute.payments.create(
-  { amount: 1990, methods: ["PIX"] },
-  { idempotencyKey: "checkout-order-123" },
-);
-```
-
-Every request can also receive an `AbortSignal` and additional headers through the request options object.
-
 ## Errors
 
 API problem responses throw `ArauteError`:
