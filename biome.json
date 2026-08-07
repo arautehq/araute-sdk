@@ -5,10 +5,19 @@
   },
   "linter": {
     "rules": {
-      "recommended": true
+      "preset": "recommended",
+      "correctness": {
+        "noUnusedImports": "off"
+      },
+      "style": {
+        "useImportType": "off"
+      }
     }
   },
+  "assist": {
+    "enabled": false
+  },
   "formatter": {
-    "enabled": true
+    "enabled": false
   }
 }
