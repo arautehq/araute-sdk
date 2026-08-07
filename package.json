@@ -32,6 +32,18 @@
     "bun"
   ],
   "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arautehq/araute-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/arautehq/araute-sdk/issues"
+  },
+  "homepage": "https://github.com/arautehq/araute-sdk#readme",
   "devDependencies": {
     "tsdown": "^0.16.6",
     "typescript": "^5.9.2"
