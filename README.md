@@ -85,12 +85,15 @@ try {
 ## Development
 
 ```bash
-# Install dependencies, run checks and tests, then build the SDK.
+# Install project dependencies.
 bun install
 
+# Run static checks.
 bun run check
 
+# Run the test suite.
 bun test
 
+# Build the SDK.
 bun run build
 ```
