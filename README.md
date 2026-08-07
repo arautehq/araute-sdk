@@ -107,5 +107,3 @@ bun run check
 bun test
 bun run build
 ```
-
-The package is released under the MIT license.
