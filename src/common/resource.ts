@@ -6,12 +6,8 @@ import type {
   RequestOptions,
 } from "./types";
 
-type QueryParams = Record<string, string | number | undefined>;
+type QueryParams = Record<string, string | number | boolean | undefined>;
 
-/**
- * Shared CRUD contract for collection resources.
- * Prefer extending {@link CrudResource} rather than implementing this by hand.
- */
 export interface CrudOperations<
   TEntity,
   TCreate,
@@ -19,8 +15,11 @@ export interface CrudOperations<
   TListQuery extends ListQuery = ListQuery,
 > {
   create(input: TCreate, options?: RequestOptions): Promise<TEntity>;
+
   list(query?: TListQuery, options?: RequestOptions): Promise<ListResponse<TEntity>>;
+
   get(id: string, options?: RequestOptions): Promise<TEntity>;
+
   update(
     id: string,
     input: TUpdate,
@@ -28,10 +27,6 @@ export interface CrudOperations<
   ): Promise<TEntity>;
 }
 
-/**
- * Base class for resources that expose create / list / get / update
- * against a collection path (e.g. `/customers`).
- */
 export abstract class CrudResource<
   TEntity,
   TCreate,
@@ -44,7 +39,7 @@ export abstract class CrudResource<
   ) {}
 
   create(input: TCreate, options?: RequestOptions) {
-    return this.http.post<TEntity>(this.path, input as never, options);
+    return this.http.post<TEntity>(this.path, input, options);
   }
 
   list(query?: TListQuery, options?: RequestOptions) {
@@ -64,13 +59,37 @@ export abstract class CrudResource<
     input: TUpdate,
     options?: Omit<RequestOptions, "idempotencyKey">,
   ) {
-    return this.http.patch<TEntity>(`${this.path}/${id}`, input as never, options);
+    return this.http.patch<TEntity>(`${this.path}/${id}`, input, options);
   }
 }
 
-/**
- * CRUD resource that also supports delete.
- */
+export abstract class ReadonlyResource<
+  TEntity,
+  TCreate,
+  TListQuery extends ListQuery = ListQuery,
+> {
+  constructor(
+    protected readonly http: ArauteHttpClient,
+    protected readonly path: string,
+  ) {}
+
+  create(input: TCreate, options?: RequestOptions) {
+    return this.http.post<TEntity>(this.path, input, options);
+  }
+
+  list(query?: TListQuery, options?: RequestOptions) {
+    return this.http.get<ListResponse<TEntity>>(
+      this.path,
+      query as QueryParams | undefined,
+      options,
+    );
+  }
+
+  get(id: string, options?: RequestOptions) {
+    return this.http.get<TEntity>(`${this.path}/${id}`, undefined, options);
+  }
+}
+
 export abstract class DeletableResource<
   TEntity,
   TCreate,

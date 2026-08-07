@@ -1,5 +1,6 @@
 import type { Problem } from "./types";
 
+/** Error thrown when the Araute API returns an RFC 7807 problem response. */
 export class ArauteError extends Error {
   readonly status: number;
   readonly type: string;
@@ -7,10 +8,11 @@ export class ArauteError extends Error {
   readonly detail: string | null | undefined;
   readonly param: string | null | undefined;
   readonly traceId: string | undefined;
+  readonly retryAfter: string | null;
   readonly errors: Problem["errors"];
   readonly amountRefundable: number | undefined;
 
-  constructor(problem: Problem) {
+  constructor(problem: Problem, retryAfter: string | null = null) {
     super(problem.title);
     this.name = "ArauteError";
     this.status = problem.status;
@@ -18,12 +20,14 @@ export class ArauteError extends Error {
     this.code = problem.code;
     this.detail = problem.detail;
     this.param = problem.param;
-    this.traceId = problem.trace_id;
+    this.traceId = problem.traceId;
+    this.retryAfter = retryAfter;
     this.errors = problem.errors;
-    this.amountRefundable = problem.amount_refundable;
+    this.amountRefundable = problem.amountRefundable;
   }
 }
 
+/** Error thrown for unexpected non-problem transport failures. */
 export class ArauteTransportError extends Error {
   readonly status: number;
   readonly responseText: string;

@@ -19,6 +19,7 @@
   "scripts": {
     "build": "tsdown",
     "check": "tsc -p tsconfig.json",
+    "test": "bun test",
     "pack": "bun pm pack",
     "publish:dry-run": "bun publish --dry-run"
   },

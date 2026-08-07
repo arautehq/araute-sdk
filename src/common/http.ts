@@ -1,15 +1,8 @@
 import { ArauteError, ArauteTransportError } from "./errors";
+import { toCamelCase, toSnakeCase, toWireEnum } from "./case";
 import type { ArauteConfig, Problem, RequestOptions } from "./types";
 
 type HttpMethod = "GET" | "POST" | "PATCH" | "DELETE";
-
-type JsonValue =
-  | string
-  | number
-  | boolean
-  | null
-  | JsonValue[]
-  | { [key: string]: JsonValue };
 
 const DEFAULT_BASE_URL = "https://api.araute.com/v1";
 
@@ -36,13 +29,17 @@ export class ArauteHttpClient {
       : "araute-sdk/0.1.0";
   }
 
-  get<T>(path: string, query?: Record<string, string | number | undefined>, options?: RequestOptions) {
+  get<T>(
+    path: string,
+    query?: Record<string, string | number | boolean | undefined>,
+    options?: RequestOptions,
+  ) {
     return this.request<T>("GET", path, query, undefined, options);
   }
 
   post<T>(
     path: string,
-    body?: JsonValue | undefined,
+    body?: unknown,
     options?: RequestOptions,
   ) {
     return this.request<T>("POST", path, undefined, body, options);
@@ -50,8 +47,8 @@ export class ArauteHttpClient {
 
   patch<T>(
     path: string,
-    body?: JsonValue | undefined,
-    options?: Omit<RequestOptions, "idempotencyKey">,
+    body?: unknown,
+    options?: RequestOptions,
   ) {
     return this.request<T>("PATCH", path, undefined, body, options);
   }
@@ -63,8 +60,8 @@ export class ArauteHttpClient {
   private async request<T>(
     method: HttpMethod,
     path: string,
-    query?: Record<string, string | number | undefined>,
-    body?: JsonValue | undefined,
+    query?: Record<string, string | number | boolean | undefined>,
+    body?: unknown,
     options?: RequestOptions,
   ): Promise<T> {
     const url = new URL(`${this.baseUrl}${path}`);
@@ -72,7 +69,7 @@ export class ArauteHttpClient {
     if (query) {
       for (const [key, value] of Object.entries(query)) {
         if (value !== undefined) {
-          url.searchParams.set(key, String(value));
+          url.searchParams.set(camelToSnakeQueryKey(key), String(toWireEnum(value)));
         }
       }
     }
@@ -86,7 +83,7 @@ export class ArauteHttpClient {
       headers.set("Content-Type", "application/json");
     }
 
-    if (method === "POST" && options?.idempotencyKey) {
+    if ((method === "POST" || method === "PATCH") && options?.idempotencyKey) {
       headers.set("Idempotency-Key", options.idempotencyKey);
     }
 
@@ -96,7 +93,7 @@ export class ArauteHttpClient {
     };
 
     if (body !== undefined) {
-      init.body = JSON.stringify(body);
+      init.body = JSON.stringify(toSnakeCase(body));
     }
 
     if (options?.signal) {
@@ -123,12 +120,12 @@ export class ArauteHttpClient {
         );
       }
 
-      return (await response.json()) as T;
+      return toCamelCase<T>(await response.json());
     }
 
     if (isProblem) {
-      const problem = (await response.json()) as Problem;
-      throw new ArauteError(problem);
+      const problem = toCamelCase<Problem>(await response.json());
+      throw new ArauteError(problem, response.headers.get("Retry-After"));
     }
 
     const text = await response.text();
@@ -138,4 +135,8 @@ export class ArauteHttpClient {
       text,
     );
   }
+}
+
+function camelToSnakeQueryKey(key: string) {
+  return key.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
 }
